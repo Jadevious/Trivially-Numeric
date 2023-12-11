@@ -17,21 +17,7 @@ public class Client {
         SSLSocket s = (SSLSocket) factory.createSocket( hostName, portNumber );
         s.startHandshake(); // the SSL handshake
 
-        // SSL Debug. TODO: Remove when complete
-//        System.out.println( "Other info:" +
-//                "\n >getHandshakeApplicationProtocol " + s.getHandshakeApplicationProtocol() +
-//                "\n >getTrafficClass "+ s.getTrafficClass() +
-//                "\n >getHandshakeSession " + s.getHandshakeSession() +
-//                "\n >getEnabledCipherSuites" + s.getEnabledCipherSuites() +
-//                "\n >getKeepAlive " + s.getKeepAlive() +
-//                "\n >getNeedClientAuth " + s.getNeedClientAuth() +
-//                "\n >getSSLParameters " + s.getSSLParameters() +
-//                "\n getSupportedCipherSuites>" + s.getSupportedCipherSuites() +
-//                "~~~~~~~~~" );
-
         System.out.printf("Connected (%s:%d)\n", s.getInetAddress(), s.getPort());
-
-//        BufferedReader userInput = new BufferedReader( new InputStreamReader(System.in) );
 
         PrintWriter outgoing = new PrintWriter( s.getOutputStream(), true );
         BufferedReader incoming = new BufferedReader( new InputStreamReader( s.getInputStream() ) );
@@ -39,6 +25,7 @@ public class Client {
         System.out.printf( "Connection to %s confirmed!", incoming.readLine());
 
         outgoing.println("acknowledged");
+        incoming.readLine();
 
         // Closing client until further functionality
     }

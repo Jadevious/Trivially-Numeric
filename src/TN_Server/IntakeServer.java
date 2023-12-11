@@ -19,7 +19,7 @@ public class IntakeServer {
             Socket newClientSocket = mainSocket.accept();
             System.out.println("Intake: Connection established. Delegating to ClientHandler thread.");
             ClientHandler ch = new ClientHandler(newClientSocket);
-            ch.run();
+            ch.start();
             threadList.add(ch);
         }
     }
