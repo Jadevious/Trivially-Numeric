@@ -14,10 +14,11 @@ public class IntakeServer {
         threadList = new ArrayList<>();
         SSLServerSocket mainSocket = ConfigureServerSocket();
 
+        System.out.println("Intake: Server started successfully, waiting for connections...");
+
         while (true) {
-            System.out.println("Intake: Waiting for connection...");
             Socket newClientSocket = mainSocket.accept();
-            System.out.println("Intake: Connection established. Delegating to ClientHandler thread.");
+            System.out.printf("Intake: new connection established. Delegating to ClientHandler thread. (%s:%s)\n", newClientSocket.getInetAddress(), newClientSocket.getPort());
             ClientHandler ch = new ClientHandler(newClientSocket);
             ch.start();
             threadList.add(ch);

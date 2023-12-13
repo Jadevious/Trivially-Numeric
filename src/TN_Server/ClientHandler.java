@@ -1,7 +1,5 @@
 package TN_Server;
 
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLServerSocketFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +8,8 @@ import java.net.Socket;
 
 public class ClientHandler extends Thread {
     private final Socket clientSocket;
+    private int score;
+    private boolean endGame;
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -26,20 +26,50 @@ public class ClientHandler extends Thread {
             outgoing.println(this.getName());
             String response = incoming.readLine();
 
-            if (response.equals("acknowledged")) {
-                System.out.printf("ClientHandler %s: Handshake successful. (Client: %s:%d) \n",
+            if (!response.equals("acknowledged")) {
+                System.out.printf("ClientHandler %s: Handshake failed. Terminating connection. (Client: %s:%d)\n",
                         this.getName(), clientSocket.getInetAddress(), clientSocket.getPort());
+                return;
             }
 
+            System.out.printf("ClientHandler %s: Handshake successful. (Client: %s:%d) \n",
+                    this.getName(), clientSocket.getInetAddress(), clientSocket.getPort());
+
+            // Waiting for client to respond with "begin"
             incoming.readLine();
 
-            // Closing server until further functionality
+            score = 0;
+            endGame = false;
 
             // TODO: Begin game
+            while (!endGame) {
+                String questionString = retrieveQuestion();
+                String answer = questionString.split(" ")[0];
 
-            // TODO: Return results and terminate connection/thread
+                questionString = "Question " + (score+1) + ": " + questionString.replace(answer, "What") + "?";
+
+                outgoing.println(questionString);
+
+                if (!incoming.readLine().equals(answer)) {
+                    endGame = true;
+
+                }
+                else {
+                    score++;
+                    outgoing.printf("Correct! Your score is %s\n", score);
+                }
+
+            }
+
+            outgoing.printf("Incorrect, nice try! Your score was %s\n", score);
+
         } catch (IOException ex) {
             System.out.printf("Exception thrown in %s. %s", this.getName(), ex.getMessage());
         }
+    }
+
+    private String retrieveQuestion() {
+        // TODO: Call API to retrieve question
+        return "100000 is the number of thunderstorms that occur in the USA every year, of which 10% are classified as severe.";
     }
 }

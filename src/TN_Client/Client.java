@@ -21,12 +21,44 @@ public class Client {
 
         PrintWriter outgoing = new PrintWriter( s.getOutputStream(), true );
         BufferedReader incoming = new BufferedReader( new InputStreamReader( s.getInputStream() ) );
+        BufferedReader userInput = new BufferedReader( new InputStreamReader(System.in) );
 
-        System.out.printf( "Connection to %s confirmed!", incoming.readLine());
+        System.out.printf( "Connection to %s confirmed!\n", incoming.readLine());
+
+        System.out.println("****************************************************************************");
 
         outgoing.println("acknowledged");
-        incoming.readLine();
 
-        // Closing client until further functionality
+        System.out.println("You will now receive a series of questions with numeric answers. \n" +
+                "The game will continue for as long as you answer correctly. \n" +
+                "Please press enter to begin!");
+
+        userInput.readLine();
+        outgoing.println("Begin");
+
+        System.out.println("****************************************************************************");
+
+        boolean continueGame = true;
+        String answer;
+        String result;
+
+        while (continueGame) {
+            System.out.println(incoming.readLine());
+
+            System.out.print("Your answer: ");
+            answer = userInput.readLine();
+
+            outgoing.println(answer);
+            result = incoming.readLine();
+
+            if (!result.startsWith("Correct!")) {
+                continueGame = false;
+            }
+
+            System.out.println(result);
+            System.out.println("****************************************************************************");
+        }
+
+        System.out.println("Thank you for playing!");
     }
 }
