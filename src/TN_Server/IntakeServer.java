@@ -16,6 +16,8 @@ public class IntakeServer {
 
         System.out.println("Intake: Server started successfully, waiting for connections...");
 
+        // Indefinitely checks for new connection attempts, accepts them, then creates a new ClientHandler thread.
+        // The thread is then added to the thread arraylist, to keep track of all active sockets in the session
         while (true) {
             Socket newClientSocket = mainSocket.accept();
             System.out.printf("Intake: new connection established. Delegating to ClientHandler thread. (%s:%s)\n", newClientSocket.getInetAddress(), newClientSocket.getPort());
@@ -25,7 +27,9 @@ public class IntakeServer {
         }
     }
 
-    private static SSLServerSocket ConfigureServerSocket() throws  IOException {
+    // ConfigureServerSocket: Uses the provided certificate and JKS to create and SSLServerSocket instance.
+    // This allows the server to protect traffic through TLS and prevent MitM attacks
+    private static SSLServerSocket ConfigureServerSocket() throws IOException {
         System.setProperty( "javax.net.ssl.keyStore", ConfigConstants.KeystorePath );
         System.setProperty( "javax.net.ssl.keyStorePassword", ConfigConstants.KeystorePassword );
 
