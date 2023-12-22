@@ -11,7 +11,7 @@ public class Client {
     public static void main(String[] args) throws IOException {
         // Currently relies on hard-coded address/port. May tie game to specific domain and use DNS to resolve the active IP
         int portNumber = 17777;
-        String hostName = "tn.youniverse.uk";
+        String hostName = "127.0.0.1";
 
         // Initiating TLS connection with server, every step documented
         System.out.println("Connecting...");

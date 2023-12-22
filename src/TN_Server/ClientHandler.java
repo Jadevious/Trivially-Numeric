@@ -39,6 +39,7 @@ public class ClientHandler extends Thread {
             if (!response.equals("acknowledged")) {
                 System.out.printf("ClientHandler %s: Handshake failed. Terminating connection. (Client: %s:%d)\n",
                         this.getName(), clientSocket.getInetAddress(), clientSocket.getPort());
+                clientSocket.close();
                 return;
             }
 
@@ -66,6 +67,7 @@ public class ClientHandler extends Thread {
                     outgoing.printf("Incorrect, the  answer was %s! Nice try, your score was %s\n", answer, score);
                     System.out.printf("ClientHandler %s: Player finished with a score of %s. Terminating connection. (Client: %s:%d)\n",
                             this.getName(), score, clientSocket.getInetAddress(), clientSocket.getPort());
+                    clientSocket.close();
                     return;
                 }
 
