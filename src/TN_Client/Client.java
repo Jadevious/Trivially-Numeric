@@ -9,15 +9,15 @@ import java.io.PrintWriter;
 
 public class Client {
     public static void main(String[] args) throws IOException {
-        // Currently relies on hard-coded address/port. May tie game to specific domain and use DNS to resolve the active IP
+        // Using the tn.youniverse.uk domain to resolve the exist IP remotely
         int portNumber = 17777;
-        String hostName = "127.0.0.1";
+        String hostName = "tn.youniverse.uk";
 
         // Initiating TLS connection with server, every step documented
         System.out.println("Connecting...");
         SSLSocketFactory factory = ( SSLSocketFactory ) SSLSocketFactory.getDefault();
         SSLSocket s = (SSLSocket) factory.createSocket( hostName, portNumber );
-        s.startHandshake(); // the SSL handshake
+        s.startHandshake();
 
         System.out.printf("Connected (%s:%d)\n", s.getInetAddress(), s.getPort());
 
