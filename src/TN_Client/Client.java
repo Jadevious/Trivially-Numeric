@@ -14,6 +14,7 @@ public class Client {
         String hostName = "tn.youniverse.uk";
 
         // Initiating TLS connection with server, every step documented
+        // Roughly based on code provided in CS2SNS Lab 6, Vitor Jesus, Aston University
         System.out.println("Connecting...");
         SSLSocketFactory factory = ( SSLSocketFactory ) SSLSocketFactory.getDefault();
         SSLSocket s = (SSLSocket) factory.createSocket( hostName, portNumber );
@@ -22,6 +23,7 @@ public class Client {
         System.out.printf("Connected (%s:%d)\n", s.getInetAddress(), s.getPort());
 
         // Configuring TCP communication and user input
+        // Based on code provided in CS2SNS Lab 3, Vitor Jesus, Aston University
         PrintWriter outgoing = new PrintWriter( s.getOutputStream(), true );
         BufferedReader incoming = new BufferedReader( new InputStreamReader( s.getInputStream() ) );
         BufferedReader userInput = new BufferedReader( new InputStreamReader(System.in) );
